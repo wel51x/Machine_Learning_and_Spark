@@ -34,6 +34,8 @@ indexer = indexer.fit(cars)
 # Create column with index values
 cars = indexer.transform(cars)
 
+#print(cars.toPandas().sample(12))
+
 print(indexer)
 # View the first five records
 cars.sample(False, .25).show()
