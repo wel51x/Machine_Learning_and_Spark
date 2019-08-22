@@ -1,1 +1,1 @@
-# DataCamp - Machine_Learning_and_Spark
+# DataCamp - Machine Learning & Spark
