@@ -81,9 +81,11 @@ prediction = tree.transform(kars_test)
 
 prediction.show(9)
 
+# Confusion matrix
 confusion_matrix = prediction.groupBy("origin_idx", "prediction").count()
 confusion_matrix.show()
 
+# Accuracy
 evaluator = MulticlassClassificationEvaluator(labelCol="origin_idx", metricName="accuracy")
 accuracy = evaluator.evaluate(prediction)
 print("Test set accuracy = " + str(accuracy))
