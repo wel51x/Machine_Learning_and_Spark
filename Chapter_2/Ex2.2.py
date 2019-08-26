@@ -56,6 +56,7 @@ print('\n', cars.dtypes, '\n')
 
 #print("\nNull data exists:", pd.isnull(cars), '\n')
 
+# Create 'features' vector: 'eng_size', 'cyl', 'avg_mpg', 'wheel_base', 'weight'
 assembler = VectorAssembler(inputCols=['eng_size', 'cyl', 'avg_mpg', 'wheel_base', 'weight'], outputCol='features')
 
 # Consolidate predictor columns
@@ -91,3 +92,16 @@ accuracy = evaluator.evaluate(prediction)
 print("Test set accuracy = " + str(accuracy))
 
 spark.stop()
+
+'''
++----------+----------+-----+
+|origin_idx|prediction|count|
++----------+----------+-----+
+|       1.0|       1.0|   21|
+|       0.0|       1.0|    9|
+|       1.0|       0.0|    7|
+|       0.0|       0.0|   49|
++----------+----------+-----+
+
+Test set accuracy = 0.813953488372093
+'''
