@@ -25,8 +25,10 @@ print('\n', books.dtypes, '\n')
 books.printSchema()
 
 # Regular expression (REGEX) to match commas and hyphens
-REGEX = '[,\\-]'
-books = books.withColumn('text', regexp_replace(books.title, REGEX, ' '))
+REGEX1 = '[,]'
+REGEX2 = '[\\-]'
+books = books.withColumn('text', regexp_replace(books.title, REGEX1, ''))
+books = books.withColumn('text', regexp_replace(books.text, REGEX2, ' '))
 
 # Text to tokens
 books = Tokenizer(inputCol="text", outputCol="tokens").transform(books)
