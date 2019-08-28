@@ -11,8 +11,8 @@ spark = SparkSession.builder \
                     .appName('first_spark_application') \
                     .getOrCreate()
 
-#flights = spark.read.csv('/Users/wel51x/Box Sync/MyBox/Code/DataCamp/data/flights.csv',
-flights = spark.read.csv('/Users/wel51x/Box Sync/MyBox/Code/DataCamp/data/flights_truncated.csv',
+flights = spark.read.csv('/Users/wel51x/Box Sync/MyBox/Code/DataCamp/data/flights.csv',
+#flights = spark.read.csv('/Users/wel51x/Box Sync/MyBox/Code/DataCamp/data/flights_truncated.csv',
                          sep=',',
                          header=True,
                          inferSchema=True,
@@ -51,13 +51,13 @@ flites = flights_indexed.select('km', 'duration')
 print(flites.toPandas().sample(12))
 
 # Create 'features' vector: 'weight_kg', 'cyl', 'type_dummy'
-assembler = VectorAssembler(inputCols=['duration'], outputCol='dur')
+assembler = VectorAssembler(inputCols=['km'], outputCol='kms')
 
 # Consolidate predictor columns
 flights_assembled = assembler.transform(flites)
 
 # Check the resulting column
-flites = flights_assembled.select('dur', 'km')
+flites = flights_assembled.select('duration', 'kms')
 flites.distinct().show(8, truncate=False)
 
 # Split the data into training and testing sets
@@ -65,15 +65,15 @@ flights_train, flights_test = flites.randomSplit([0.8, 0.2], seed=23)
 print(flights_train.toPandas().shape, flights_test.toPandas().shape)
 
 # Create a regression object and train on training data
-regression = LinearRegression(labelCol="km", featuresCol = 'dur').fit(flights_train)
+regression = LinearRegression(labelCol="duration", featuresCol = 'kms').fit(flights_train)
 
 # Create predictions for the testing data and take a look at the predictions
 predictions = regression.transform(flights_test)
-predictions.select('dur', 'prediction').show(truncate=False)
+predictions.select('duration', 'prediction').show(truncate=False)
 print(predictions.toPandas().sample(12))
 
 # Calculate the RMSE
-print("RMSE", RegressionEvaluator(labelCol="km").evaluate(predictions))
+print("RMSE", RegressionEvaluator(labelCol="duration").evaluate(predictions))
 
 # Print the coefficients and intercept for linear regression
 print("\nCoefficients: %s" % str(regression.coefficients))
