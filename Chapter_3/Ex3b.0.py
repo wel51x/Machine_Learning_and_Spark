@@ -2,7 +2,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import round
 from pyspark.ml.feature import StringIndexer, OneHotEncoderEstimator, VectorAssembler
 from pyspark.ml.regression import LinearRegression
-from pyspark.ml.evaluation import RegressionEvaluator
 import pandas as pd
 
 # Creating a SparkSession
@@ -56,7 +55,7 @@ onehot = onehot.fit(kars)
 kars = onehot.transform(kars)
 kars.distinct().show(8, truncate=False)
 
-# Create 'features' vector: 'eng_size', 'cyl', 'avg_mpg', 'wheel_base', 'weight'
+# Create 'features' vector: 'weight_kg', 'cyl', 'type_dummy'
 assembler = VectorAssembler(inputCols=['weight_kg', 'cyl', 'type_dummy'], outputCol='features')
 
 # Consolidate predictor columns
