@@ -97,7 +97,7 @@ print("RMSE: %f" % trainingSummary.rootMeanSquaredError)
 
 # Lasso regression
 # ? = 0.1 | ? = 1 -> Lasso
-lasso = LinearRegression(labelCol='consumption', elasticNetParam=1, regParam=0.1).fit(kars_train)
+lasso = LinearRegression(labelCol='consumption', elasticNetParam=1, regParam=0.75).fit(kars_train)
 # Create predictions for the testing data and take a look at the predictions
 predictions = lasso.transform(kars_test)
 print("\nLasso Regression")
