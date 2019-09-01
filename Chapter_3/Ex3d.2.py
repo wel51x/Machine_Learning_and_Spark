@@ -100,11 +100,11 @@ flites = flights_assembled.select('features', 'duration')
 flights_train, flights_test = flites.randomSplit([0.8, 0.2], seed=23)
 #print(flights_train.toPandas().shape, flights_test.toPandas().shape)
 
-# Create a regression object and train on training data
-regression = LinearRegression(labelCol="duration", elasticNetParam=0, regParam=0.1).fit(flights_train)
+# Create a ridge regression object and train on training data
+ridge = LinearRegression(labelCol="duration", elasticNetParam=0, regParam=0.1).fit(flights_train)
 
 # Create predictions for the testing data and take a look at the predictions
-predictions = regression.transform(flights_test)
+predictions = ridge.transform(flights_test)
 #predictions.select('duration', 'prediction').show(truncate=False)
 print("\nRidge Regression")
 print(predictions.toPandas().sample(12))
@@ -113,11 +113,11 @@ print(predictions.toPandas().sample(12))
 print("\nRMSE", RegressionEvaluator(labelCol="duration").evaluate(predictions))
 
 # Print the coefficients and intercept for linear regression
-print("\nCoefficients: %s" % str(regression.coefficients))
-print("Intercept: %s" % str(regression.intercept))
+print("\nCoefficients: %s" % str(ridge.coefficients))
+print("Intercept: %s" % str(ridge.intercept))
 
 # Summarize the model over the training set and print out some metrics
-trainingSummary = regression.summary
+trainingSummary = ridge.summary
 #print("numIterations: %d" % trainingSummary.totalIterations)
 #print("objectiveHistory: %s\n" % str(trainingSummary.objectiveHistory))
 #trainingSummary.residuals.show(8)
@@ -125,7 +125,7 @@ print("\nRMSE: %f" % trainingSummary.rootMeanSquaredError)
 print("r2: %f" % trainingSummary.r2)
 
 # Average speed in km per hour
-avg_speed = regression.intercept / regression.coefficients[0]
+avg_speed = ridge.intercept / ridge.coefficients[0]
 print("\nAverage speed in km/h", avg_speed)
 
 spark.stop()
