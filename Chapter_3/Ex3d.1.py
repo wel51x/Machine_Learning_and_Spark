@@ -106,6 +106,7 @@ regression = LinearRegression(labelCol="duration", featuresCol = 'features').fit
 # Create predictions for the testing data and take a look at the predictions
 predictions = regression.transform(flights_test)
 #predictions.select('duration', 'prediction').show(truncate=False)
+print("\nStandard Linear Regression")
 print(predictions.toPandas().sample(12))
 
 # Calculate the RMSE
