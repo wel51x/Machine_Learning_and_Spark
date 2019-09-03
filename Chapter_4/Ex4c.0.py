@@ -87,12 +87,12 @@ cv = cv.setNumFolds(10).setSeed(13)
 cv = cv.fit(kars_train)
 print("Average RMSE across all folds:", cv.avgMetrics)
 
-# Make predictions on the testing data
-print("evaluator RMSE: %f" % evaluator.evaluate(cv.transform(kars_test)))
-
 # Best Model
 best_mod = cv.bestModel
 print("Best Model:", best_mod)
+
+# Make predictions on the testing data
+print("evaluator RMSE: %f" % evaluator.evaluate(best_mod.transform(kars_test)))
 
 param_dict = best_mod.stages[-1].extractParamMap()
 
@@ -110,3 +110,33 @@ print('Best Param (MaxIter): ', best_max_iter)
 print('Best Param (elasticNetParam): ', best_elastic_net)
 
 spark.stop()
+'''
+Average RMSE across all folds: [0.8884161396108119, 0.8885570162342967, 0.8887003373615797, 0.8888460854480509,
+ 0.8889469112883204, 0.888638790371932, 0.8896265895818797, 0.8907399503625433, 0.8919003208219313,
+ 0.8932097339974567, 0.894205188615833, 0.907306467005484, 0.9165213571326879, 0.9225497645230731,
+ 0.9290233961412238, 0.9958342845748357, 1.0831470869945592, 1.1994950096532535, 1.3145922656780331,
+ 1.4190054287185188, 1.6126334128475643, 2.1708216814479897, 2.1708216814479897, 2.1708216814479897,
+ 2.1708216814479897, 0.9590668092869994, 0.9598271610930321, 0.9609384803051157, 0.9621303104254229,
+ 0.9616762164509155, 0.9590497701895473, 0.9586935312415451, 0.9584540186309892, 0.9575686306409834,
+ 0.9571689032652976, 0.9604868497536181, 0.9575168821871982, 0.9600267570973535, 0.9627073856626984,
+ 0.967787821542842, 0.995212985975225, 1.0142016366824742, 1.0149616270114779, 1.0147099412354486,
+ 1.0554103745652683, 1.481761936331171, 1.6900082994947436, 1.898409984381161, 2.1412922880403, 2.2646836098809184]
+Best Model: PipelineModel_467a621a6732
+evaluator RMSE: 0.809642
+aggregationDepth = 2
+elasticNetParam = 0.0
+epsilon = 1.35
+featuresCol = features
+fitIntercept = True
+labelCol = consumption
+loss = squaredError
+maxIter = 100
+predictionCol = prediction
+regParam = 0.001
+solver = auto
+standardization = True
+tol = 1e-06
+Best Param (regParam):  0.001
+Best Param (MaxIter):  100
+Best Param (elasticNetParam):  0.0
+'''

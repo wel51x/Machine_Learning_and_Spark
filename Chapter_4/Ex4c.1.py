@@ -93,7 +93,9 @@ best_model = cv.bestModel
 print("Best model stages:", best_model.stages)
 
 # Get the parameters for the LinearRegression object in the best model
-print("Best model LinReg ParamMap:", best_model.stages[3].extractParamMap())
+print("Best model LinReg ParamMap:")
+for k, v in best_model.stages[REGRESSION_STAGE].extractParamMap().items():
+    print(" ", k.name, "=", v)
 
 # Print the RMSE for folds and evaluator
 print("Average RMSE across all folds: %f" % cv.avgMetrics[0])
@@ -103,21 +105,22 @@ print("Best Model RMSE: %f" % evaluator.evaluate(best_model.transform(flights_te
 
 spark.stop()
 '''
-Pipeline
-RMSE 10.829636099618703
-
-Coefficients: [0.07427522396601931,29.03464521661228,20.94753306215377,52.843260459398124,47.07820683731686,18.61418840829651,16.07354745008441,18.111707092924366,0.4390317750209789,0.09783893815666257,-0.2958070967063388,0.0814943130635097,0.226337029546609,-0.0781308641374644]
-Intercept: 15.361566402133912
-numIterations: 1
-objectiveHistory: [0.0]
-
-
-RMSE: 11.085525
-r2: 0.984047
-
-Average speed in km/h 206.81952314491548
-
-V2
-Average RMSE across all folds: 11.091014
-evaluator RMSE: 10.829636
+Best model stages: [StringIndexer_24baacbe24eb, OneHotEncoderEstimator_e870d4b850ad,
+ VectorAssembler_e4d8d619a6e5, LinearRegression_f829a44d3a38]
+Best model LinReg ParamMap:
+  aggregationDepth = 2
+  elasticNetParam = 0.0
+  epsilon = 1.35
+  featuresCol = features
+  fitIntercept = True
+  labelCol = duration
+  loss = squaredError
+  maxIter = 100
+  predictionCol = prediction
+  regParam = 0.01
+  solver = auto
+  standardization = True
+  tol = 1e-06
+Average RMSE across all folds: 11.091036
+Best Model RMSE: 10.829565
 '''
