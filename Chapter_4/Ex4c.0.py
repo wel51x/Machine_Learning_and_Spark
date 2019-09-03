@@ -98,7 +98,8 @@ param_dict = best_mod.stages[-1].extractParamMap()
 
 sane_dict = {}
 for k, v in param_dict.items():
-  sane_dict[k.name] = v
+    print(k.name, "=", v)
+    sane_dict[k.name] = v
 
 best_reg = sane_dict["regParam"]
 best_elastic_net = sane_dict["elasticNetParam"]
