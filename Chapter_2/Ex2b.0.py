@@ -3,7 +3,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import round
 from pyspark.ml.feature import StringIndexer, VectorAssembler
 from pyspark.ml.classification import DecisionTreeClassifier
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator, BinaryClassificationEvaluator
 import pandas as pd
 
 # Creating a SparkSession
@@ -90,6 +90,19 @@ confusion_matrix.show()
 evaluator = MulticlassClassificationEvaluator(labelCol="origin_idx", metricName="accuracy")
 accuracy = evaluator.evaluate(prediction)
 print("Test set accuracy = " + str(accuracy))
+
+# Find weighted precision
+multi_evaluator = MulticlassClassificationEvaluator(labelCol="origin_idx")
+accuracy = multi_evaluator.evaluate(prediction, {multi_evaluator.metricName: "accuracy"})
+weighted_precision = multi_evaluator.evaluate(prediction, {multi_evaluator.metricName: "weightedPrecision"})
+weighted_recall = multi_evaluator.evaluate(prediction, {multi_evaluator.metricName: "weightedRecall"})
+
+# Find AUC
+binary_evaluator = BinaryClassificationEvaluator(labelCol="origin_idx")
+auc = binary_evaluator.evaluate(prediction, {binary_evaluator.metricName: "areaUnderROC"})
+print("Summary Stats")
+print('accuracy = {:.3f}\nweighted precision = {:.3f}'.format(accuracy, weighted_precision))
+print('weighted recall = {:.3f}\nareaUnderROC = {:.3f}'.format(weighted_recall, auc))
 
 spark.stop()
 
